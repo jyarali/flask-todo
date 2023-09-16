@@ -1,5 +1,5 @@
-from ast import List
 from datetime import datetime
+from typing import List
 from db import db
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -12,7 +12,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String)
     created_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.now)
-    children: Mapped[List["Todo"]] = relationship(back_populates="User")
+    todos: Mapped[List["Todo"]] = relationship(back_populates="user")
 
 
 class Todo(db.Model):
@@ -27,4 +27,4 @@ class Todo(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.now, onupdate=datetime.now)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'))
-    parent: Mapped["User"] = relationship(back_populates="Todo")
+    user: Mapped["User"] = relationship(back_populates="todos")
